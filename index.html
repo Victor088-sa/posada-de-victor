@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Posada de Víctor en Mina Clavero, Córdoba. Alojamiento cálido y acogedor, atendido por sus dueños. Piscina climatizada, parque verde, sombra, asadores, WiFi y TV por cable." />
+  <meta name="theme-color" content="#4a9d6f" />
+  <title>Posada de Víctor | Cabañas en Mina Clavero</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ========== RESET Y VARIABLES ========== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #4a9d6f;
+      --primary-dark: #2d6a4f;
+      --primary-darker: #1f4a34;
+      --text-dark: #281f1f;
+      --text-light: #666;
+      --bg-light: #f5f9f7;
+      --white: #ffffff;
+      --shadow: 0 5px 15px rgba(0,0,0,0.08);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
+      --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-dark);
+      line-height: 1.6;
+      background: var(--bg-light);
+      overflow-x: hidden;
+    }
+
+    /* ========== CARRUSEL ========== */
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      height: 550px;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2), inset 0 0 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .carousel-slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .carousel-slide.active {
+      display: block;
+      animation: zoomSlideIn 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .carousel-slide::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.08);
+      z-index: 1;
+      backdrop-filter: blur(0.5px);
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(1.05) contrast(1.1) saturate(1.1);
+      transition: filter 0.5s ease;
+    }
+
+    .carousel-slide.active img {
+      animation: imageZoomPan 8s ease-out forwards;
+    }
+
+    @keyframes zoomSlideIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes imageZoomPan {
+      0% {
+        transform: scale(1.05) translateZ(0);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(1) translateZ(0);
+        opacity: 1;
+      }
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(135deg, rgba(74, 157, 111, 0.9), rgba(45, 106, 79, 0.85));
+      color: var(--white);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      font-size: 28px;
+      padding: 16px 22px;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: var(--transition);
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      font-weight: bold;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 32px rgba(74, 157, 111, 0.3);
+    }
+
+    .carousel-btn:hover {
+      background: linear-gradient(135deg, rgba(74, 157, 111, 1), rgba(45, 106, 79, 1));
+      transform: translateY(-50%) scale(1.15);
+      box-shadow: 0 12px 48px rgba(74, 157, 111, 0.5);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .carousel-btn:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    .carousel-btn.left { left: 20px; }
+    .carousel-btn.right { right: 20px; }
+
+    .carousel-controls {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .carousel-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: var(--transition);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .carousel-dot:hover {
+      background: rgba(255, 255, 255, 0.9);
+      transform: scale(1.2);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.4);
+    }
+
+    .carousel-dot.active {
+      background: var(--primary);
+      border-color: var(--white);
+      transform: scale(1.4);
+      box-shadow: 0 0 20px rgba(74, 157, 111, 0.6), inset 0 0 8px rgba(255, 255, 255, 0.3);
+    }
+
+    /* ========== HEADER ========== */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: var(--white);
+      text-align: center;
+      padding: 50px 20px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    header h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    header .subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.3rem;
+      color: #ffffff;
+      opacity: 1;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+    }
+
+    /* ========== SECCIONES ========== */
+    section {
+      padding: 70px 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    section:nth-child(even) {
+      background: rgba(74, 157, 111, 0.03);
+    }
+
+    h2 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom: 40px;
+      text-align: center;
+      color: var(--primary-dark);
+      position: relative;
+      padding-bottom: 20px;
+      font-weight: 700;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+      border-radius: 2px;
+    }
+
+    h3 {
+      font-family: 'Lora', serif;
+      font-size: 1.3rem;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    p {
+      color: var(--text-light);
+      line-height: 1.8;
+      font-size: 1rem;
+    }
+
+    .section-description {
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 50px;
+      color: var(--text-light);
+      font-size: 1.1rem;
+      line-height: 1.8;
+      font-weight: 400;
+    }
+
+    /* ========== VIDEO ========== */
+    .video-container {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto 40px;
+      height: 600px;
+      overflow: hidden;
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 12px 48px rgba(74, 157, 111, 0.2);
+    }
+
+    .video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(1.05) contrast(1.08) saturate(1.08);
+    }
+
+    /* ========== GRID Y CARDS ========== */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: var(--white);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      border: 1px solid rgba(74, 157, 111, 0.1);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(74, 157, 111, 0.2);
+      border-color: var(--primary);
+    }
+
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      transition: var(--transition);
+      filter: brightness(1.02) contrast(1.08) saturate(1.08);
+    }
+
+    .card:hover img {
+      transform: scale(1.08);
+      filter: brightness(1.08) contrast(1.12) saturate(1.15) drop-shadow(0 8px 16px rgba(74, 157, 111, 0.2));
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      display: inline-block;
+    }
+
+    .card p {
+      color: var(--text-light);
+      flex-grow: 1;
+      margin-bottom: 15px;
+    }
+
+    .card strong {
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+
+    /* ========== AMENIDADES ========== */
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .amenity-card {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: var(--white);
+      padding: 25px;
+      border-radius: 14px;
+      text-align: center;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .amenity-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(74, 157, 111, 0.3);
+    }
+
+    .amenity-icon {
+      font-size: 2.8rem;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    .amenity-card p {
+      color: var(--white);
+      font-weight: 500;
+      margin: 0;
+    }
+
+    /* ========== MAP ========== */
+    .map-container {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 20px;
+    }
+
+    .iframe-map {
+      border: none;
+      display: block;
+      border-radius: 16px;
+    }
+
+    .maps-link-container {
+      text-align: center;
+    }
+
+    .maps-link {
+      display: inline-block;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      padding: 14px 28px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+      font-size: 1.05rem;
+    }
+
+    .maps-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(74, 157, 111, 0.3);
+    }
+
+    /* ========== CTA BUTTON ========== */
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--white);
+      padding: 16px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 15px;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(74, 157, 111, 0.3);
+    }
+
+    /* ========== WHATSAPP BUTTON ========== */
+    .whatsapp {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: #25d366;
+      color: var(--white);
+      padding: 16px 22px;
+      border-radius: 50%;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      transition: var(--transition);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      width: 60px;
+      height: 60px;
+    }
+
+    .whatsapp:hover {
+      background: #1ead52;
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .whatsapp:active {
+      transform: scale(0.95);
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-darker) 100%);
+      color: var(--white);
+      text-align: center;
+      padding: 40px 20px;
+      margin-top: 40px;
+      box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    footer p {
+      color: var(--white);
+      opacity: 0.95;
+      font-size: 0.95rem;
+    }
+
+    /* ========== RESPONSIVO ========== */
+    @media (max-width: 768px) {
+      section {
+        padding: 50px 15px;
+      }
+
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .carousel-container {
+        height: 350px;
+      }
+
+      .carousel-btn {
+        font-size: 22px;
+        padding: 12px 16px;
+      }
+
+      .carousel-btn:hover {
+        transform: translateY(-50%) scale(1.12);
+      }
+
+      .video-container {
+        height: 400px;
+      }
+
+      h2::after {
+        width: 50px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+
+      .amenities-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .whatsapp {
+        bottom: 20px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.5rem;
+      }
+
+      .carousel-container {
+        height: 250px;
+      }
+
+      .carousel-btn {
+        font-size: 18px;
+        padding: 10px 12px;
+      }
+
+      .carousel-btn:hover {
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      .video-container {
+        height: 300px;
+      }
+
+      section {
+        padding: 40px 15px;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+      }
+
+      .amenities-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .card img {
+        height: 200px;
+      }
+
+      .whatsapp {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== CARRUSEL ========== -->
+<div class="carousel-container" role="region" aria-label="Galería de fotos del alojamiento">
+  <div class="carousel-slide active"><img src="assets/images/posada-1.webp" alt="Vista exterior de Posada de Víctor"></div>
+  <div class="carousel-slide"><img src="assets/images/posada-2.webp" alt="Jardín y zona común"></div>
+  <div class="carousel-slide"><img src="assets/images/posada-3.webp" alt="Piscina climatizada"></div>
+  <div class="carousel-slide"><img src="assets/images/posada-4.webp" alt="Detalle de cabaña"></div>
+  <div class="carousel-slide"><img src="assets/images/posada-5.webp" alt="Zona de descanso"></div>
+  
+  <button class="carousel-btn left" onclick="changeSlide(-1)" aria-label="Foto anterior">❮</button>
+  <button class="carousel-btn right" onclick="changeSlide(1)" aria-label="Foto siguiente">❯</button>
+  
+  <div class="carousel-controls" role="tablist" aria-label="Selectores de foto">
+    <span class="carousel-dot active" role="tab" aria-selected="true" onclick="currentSlide(0)" aria-label="Foto 1"></span>
+    <span class="carousel-dot" role="tab" aria-selected="false" onclick="currentSlide(1)" aria-label="Foto 2"></span>
+    <span class="carousel-dot" role="tab" aria-selected="false" onclick="currentSlide(2)" aria-label="Foto 3"></span>
+    <span class="carousel-dot" role="tab" aria-selected="false" onclick="currentSlide(3)" aria-label="Foto 4"></span>
+    <span class="carousel-dot" role="tab" aria-selected="false" onclick="currentSlide(4)" aria-label="Foto 5"></span>
+  </div>
+</div>
+
+<!-- ========== HEADER ========== -->
+<header>
+  <div>
+    <h1>Posada de Víctor</h1>
+    <p class="subtitle">🏡 Cabañas en Mina Clavero, Córdoba</p>
+  </div>
+</header>
+
+<!-- ========== SECCIÓN PRESENTACIÓN ========== -->
+<section id="presentacion">
+  <h2>Bienvenido a tu próximo descanso</h2>
+  <p class="section-description">
+    Somos una posada familiar atendida por sus dueños, especializada en brindar alojamiento 
+    cálido y acogedor en un ambiente tranquilo. Ven a disfrutar de Mina Clavero con todas 
+    las comodidades que mereces.
+  </p>
+</section>
+
+<!-- ========== VIDEO ========== -->
+<section id="experiencia">
+  <h2>Viví la experiencia</h2>
+  <div class="video-container">
+    <video autoplay muted loop poster="assets/images/pileta-poster.jpg">
+      <source src="assets/videos/video-1.mp4" type="video/mp4">
+      Tu navegador no soporta video HTML5.
+    </video>
+  </div>
+  <p class="section-description">
+    Relajate en nuestra piscina con climatización solar, rodeada de verde, sombra y tranquilidad, 
+    en un entorno ideal para disfrutar Mina Clavero.
+  </p>
+</section>
+
+
+<!-- ========== HABITACIONES ========== -->
+<section id="habitaciones">
+  <h2>Nuestras Habitaciones</h2>
+  <p class="section-description">
+    Espacios cómodos y bien equipados, diseñados para tu descanso
+  </p>
+  <div class="grid">
+    <div class="card">
+      <img src="assets/images/posada-6.jpeg" alt="Habitación confortable con cama matrimonial">
+      <h3>Confortables y Acogedoras</h3>
+      <p>Habitaciones bien cuidadas en cada detalle, ideales para parejas y familias que buscan tranquilidad y descanso en un ambiente acogedor.</p>
+    </div>
+    <div class="card">
+      <img src="assets/images/posada-7.jpeg" alt="Interior moderno de la habitación">
+      <h3>Totalmente Equipadas</h3>
+      <p>Cuentan con <strong>TV con cable, WiFi</strong> de alta velocidad, ambientes luminosos y silenciosos, lo que garantiza un descanso pleno y renovador.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SERVICIOS Y COMODIDADES ========== -->
+<section id="servicios">
+  <h2>Servicios y Comodidades</h2>
+  <p class="section-description">
+    Todo lo que necesitas para disfrutar al máximo
+  </p>
+  <div class="amenities-grid">
+    <div class="amenity-card">
+      <div class="amenity-icon">🏊</div>
+      <p>Piscina climatizada solar</p>
+    </div>
+    <div class="amenity-card">
+      <div class="amenity-icon">🌿</div>
+      <p>Parque verde con mucha sombra</p>
+    </div>
+    <div class="amenity-card">
+      <div class="amenity-icon">🔥</div>
+      <p>Asadores y área de parrilla</p>
+    </div>
+    <div class="amenity-card">
+      <div class="amenity-icon">📶</div>
+      <p>WiFi en todo el predio</p>
+    </div>
+    <div class="amenity-card">
+      <div class="amenity-icon">📺</div>
+      <p>TV por cable en las habitaciones</p>
+    </div>
+    <div class="amenity-card">
+      <div class="amenity-icon">👥</div>
+      <p>Atendido por sus dueños</p>
+    </div>
+  </div>
+  <div style="text-align: center; margin-top: 40px;">
+    <a href="https://wa.me/549344409536" class="cta-button" target="_blank" rel="noopener noreferrer">
+      ✉️ Consulta disponibilidad
+    </a>
+  </div>
+</section>
+
+<!-- ========== UBICACIÓN ========== -->
+<section id="ubicacion">
+  <h2>Nuestra Ubicación</h2>
+  <p class="section-description">
+    Fácil acceso desde todas partes de Mina Clavero
+  </p>
+  <div class="map-container">
+    <iframe
+      title="Ubicación de Posada de Víctor en Google Maps"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d341.671!2d-65.00486!3d-31.73533!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x942d2674d2bb96b7%3A0xf1bce02d3fcc8682!2sPosada%20de%20Victor!5e0!3m2!1ses-419!2sar!4v1736000000000"
+      width="100%"
+      height="400"
+      class="iframe-map"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+  <p class="maps-link-container">
+    <a href="https://maps.app.goo.gl/zp4fpi3itmCrtRzP9" target="_blank" rel="noopener noreferrer" class="maps-link">
+      📍 Ver cómo llegar en Google Maps
+    </a>
+  </p>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <p>© 2025 Posada de Víctor – Mina Clavero, Córdoba | Alojamiento Familiar</p>
+</footer>
+
+<!-- ========== BOTÓN WHATSAPP ========== -->
+<a class="whatsapp" href="https://wa.me/549344409536" target="_blank" rel="noopener noreferrer" title="Contactar por WhatsApp" aria-label="Reservar por WhatsApp">💬</a>
+
+<!-- ========== JAVASCRIPT ========== -->
+<script>
+// ========== VARIABLES DEL CARRUSEL ==========
+let currentSlideIndex = 0;
+const totalSlides = 5;
+let autoPlayInterval;
+
+// ========== FUNCIONES DEL CARRUSEL ==========
+
+// Cambiar slide usando los botones de navegación
+function changeSlide(n) {
+  clearInterval(autoPlayInterval);
+  currentSlideIndex += n;
+  
+  // Circular al inicio o al final
+  if (currentSlideIndex >= totalSlides) { 
+    currentSlideIndex = 0; 
+  }
+  if (currentSlideIndex < 0) { 
+    currentSlideIndex = totalSlides - 1; 
+  }
+  
+  showSlide(currentSlideIndex);
+  autoPlay();
+}
+
+// Ir a un slide específico
+function currentSlide(n) {
+  clearInterval(autoPlayInterval);
+  currentSlideIndex = n;
+  showSlide(currentSlideIndex);
+  updateTabs();
+  autoPlay();
+}
+
+// Mostrar slide y actualizar indicadores
+function showSlide(n) {
+  const slides = document.querySelectorAll('.carousel-slide');
+  const dots = document.querySelectorAll('.carousel-dot');
+  
+  // Eliminar clase active de todos
+  slides.forEach(slide => slide.classList.remove('active'));
+  dots.forEach(dot => dot.classList.remove('active'));
+  
+  // Agregar clase active al slide y dot actual
+  slides[n].classList.add('active');
+  dots[n].classList.add('active');
+}
+
+// Actualizar estado de tabs ARIA
+function updateTabs() {
+  const dots = document.querySelectorAll('.carousel-dot');
+  dots.forEach((dot, index) => {
+    if (index === currentSlideIndex) {
+      dot.setAttribute('aria-selected', 'true');
+    } else {
+      dot.setAttribute('aria-selected', 'false');
+    }
+  });
+}
+
+// Auto-play del carrusel cada 5 segundos
+function autoPlay() {
+  autoPlayInterval = setInterval(() => {
+    currentSlideIndex++;
+    if (currentSlideIndex >= totalSlides) { 
+      currentSlideIndex = 0; 
+    }
+    showSlide(currentSlideIndex);
+    updateTabs();
+  }, 5000);
+}
+
+// ========== INICIALIZAR ==========
+// Iniciar carrusel automáticamente cuando carga la página
+document.addEventListener('DOMContentLoaded', () => {
+  autoPlay();
+  
+  // Pausar autoplay cuando el usuario interactúa
+  const carouselContainer = document.querySelector('.carousel-container');
+  if (carouselContainer) {
+    carouselContainer.addEventListener('mouseenter', () => {
+      clearInterval(autoPlayInterval);
+    });
+    
+    carouselContainer.addEventListener('mouseleave', () => {
+      autoPlay();
+    });
+
+    // Agregar efecto de parallax ligero en las imágenes
+    carouselContainer.addEventListener('mousemove', (e) => {
+      const slides = document.querySelectorAll('.carousel-slide.active img');
+      if (slides.length === 0) return;
+      
+      const img = slides[0];
+      const rect = carouselContainer.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      
+      const moveX = (x - 0.5) * 2;
+      const moveY = (y - 0.5) * 2;
+      
+      img.style.transform = `scale(1.05) translate(${moveX * 3}px, ${moveY * 3}px)`;
+    });
+
+    carouselContainer.addEventListener('mouseleave', () => {
+      const imgs = document.querySelectorAll('.carousel-slide.active img');
+      imgs.forEach(img => {
+        img.style.transform = 'scale(1) translate(0, 0)';
+      });
+    });
+  }
+});
+
+// ========== NAVEGACIÓN POR TECLADO ==========
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') {
+    changeSlide(-1);
+  } else if (e.key === 'ArrowRight') {
+    changeSlide(1);
+  }
+});
+</script>
+</body>
+</html>
