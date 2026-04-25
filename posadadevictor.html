@@ -277,9 +277,10 @@
     .video-container video {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
       filter: brightness(1.05) contrast(1.08) saturate(1.08);
+      transform: scale(0.85);
     }
 
     /* ========== GRID Y CARDS ========== */
@@ -434,6 +435,191 @@
     .cta-button:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 25px rgba(74, 157, 111, 0.3);
+    }
+
+    /* ========== MODAL GALERÍA ========== */
+    .gallery-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .gallery-modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-image {
+      max-width: 100%;
+      max-height: 85vh;
+      border-radius: 12px;
+      box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+      animation: imageZoomIn 0.4s ease;
+    }
+
+    @keyframes imageZoomIn {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      color: var(--white);
+      font-size: 36px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: var(--transition);
+      z-index: 1001;
+    }
+
+    .modal-close:hover {
+      transform: scale(1.2);
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+
+    .modal-prev, .modal-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--white);
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 15px 25px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      transition: var(--transition);
+      user-select: none;
+      z-index: 1001;
+    }
+
+    .modal-prev:hover, .modal-next:hover {
+      background: rgba(0, 0, 0, 0.8);
+      border-color: rgba(255, 255, 255, 0.8);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .modal-prev {
+      left: 20px;
+    }
+
+    .modal-next {
+      right: 20px;
+    }
+
+    .modal-counter {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--white);
+      font-size: 1.1rem;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px 20px;
+      border-radius: 50px;
+      z-index: 1001;
+    }
+
+    .gallery-trigger {
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .gallery-trigger:hover {
+      filter: brightness(1.1);
+    }
+
+    /* ========== PROMO BANNER ========== */
+    .promo-banner {
+      background: linear-gradient(135deg, #0a7ea4 0%, #0f9fd7 50%, #00d4ff 100%);
+      color: var(--white);
+      padding: 20px;
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      font-family: 'Lora', serif;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+      animation: promoPulse 2s ease-in-out infinite;
+    }
+
+    .promo-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    .promo-banner span {
+      position: relative;
+      z-index: 2;
+      display: inline-block;
+      animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes promoPulse {
+      0%, 100% {
+        box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 12px 40px rgba(0, 212, 255, 0.6);
+        transform: scale(1.01);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-3px);
+      }
     }
 
     /* ========== WHATSAPP BUTTON ========== */
@@ -614,6 +800,11 @@
   </div>
 </header>
 
+<!-- ========== BANNER PROMOCIONAL ========== -->
+<div class="promo-banner">
+  <span>❄️ PROMOCIÓN INVIERNO 2026 ❄️</span>
+</div>
+
 <!-- ========== SECCIÓN PRESENTACIÓN ========== -->
 <section id="presentacion">
   <h2>Bienvenido a tu próximo descanso</h2>
@@ -629,13 +820,12 @@
   <h2>Viví la experiencia</h2>
   <div class="video-container">
     <video autoplay muted loop poster="assets/images/pileta-poster.jpg">
-      <source src="assets/videos/video-1.mp4" type="video/mp4">
+      <source src="inviernoposada.mp4" type="video/mp4">
       Tu navegador no soporta video HTML5.
     </video>
   </div>
   <p class="section-description">
-    Relajate en nuestra piscina con climatización solar, rodeada de verde, sombra y tranquilidad, 
-    en un entorno ideal para disfrutar Mina Clavero.
+    Veni a conocer la magia de traslasierra en invierno! En posada de victor te esperamos todo el año ,los mejores precios y atencion
   </p>
 </section>
 
@@ -648,17 +838,30 @@
   </p>
   <div class="grid">
     <div class="card">
-      <img src="assets/images/posada-6.jpeg" alt="Habitación confortable con cama matrimonial">
+      <img class="gallery-trigger" src="assets/images/posada-6.jpeg" alt="Habitación confortable con cama matrimonial" onclick="openGallery(0)" style="cursor: pointer;">
       <h3>Confortables y Acogedoras</h3>
       <p>Habitaciones bien cuidadas en cada detalle, ideales para parejas y familias que buscan tranquilidad y descanso en un ambiente acogedor.</p>
     </div>
     <div class="card">
-      <img src="assets/images/posada-7.jpeg" alt="Interior moderno de la habitación">
+      <img class="gallery-trigger" src="assets/images/posada-7.jpeg" alt="Interior moderno de la habitación" onclick="openGallery(1)" style="cursor: pointer;">
       <h3>Totalmente Equipadas</h3>
       <p>Cuentan con <strong>TV con cable, WiFi</strong> de alta velocidad, ambientes luminosos y silenciosos, lo que garantiza un descanso pleno y renovador.</p>
     </div>
   </div>
 </section>
+
+<!-- ========== MODAL GALERÍA DE HABITACIONES ========== -->
+<div id="galleryModal" class="gallery-modal">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeGallery()">&times;</span>
+    <span class="modal-prev" onclick="prevGallery()">&#10094;</span>
+    <img id="modalImage" class="modal-image" src="" alt="Habitación ampliada">
+    <span class="modal-next" onclick="nextGallery()">&#10095;</span>
+    <div class="modal-counter">
+      <span id="currentImage">1</span> / <span id="totalImages">2</span>
+    </div>
+  </div>
+</div>
 
 <!-- ========== SERVICIOS Y COMODIDADES ========== -->
 <section id="servicios">
@@ -692,9 +895,12 @@
       <p>Atendido por sus dueños</p>
     </div>
   </div>
-  <div style="text-align: center; margin-top: 40px;">
+  <div style="text-align: center; margin-top: 40px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
     <a href="https://wa.me/549344409536" class="cta-button" target="_blank" rel="noopener noreferrer">
       ✉️ Consulta disponibilidad
+    </a>
+    <a href="mailto:correo.posadadevictor@gmail.com" class="cta-button">
+      📧 Envianos un e-mail
     </a>
   </div>
 </section>
@@ -843,6 +1049,68 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.transform = 'scale(1) translate(0, 0)';
       });
     });
+  }
+});
+
+// ========== GALERÍA DE HABITACIONES ==========
+const galleryImages = [
+  'assets/images/posada-6.jpeg',
+  'assets/images/posada-7.jpeg'
+];
+
+let currentGalleryIndex = 0;
+
+function openGallery(index) {
+  currentGalleryIndex = index;
+  const modal = document.getElementById('galleryModal');
+  const modalImage = document.getElementById('modalImage');
+  const currentSpan = document.getElementById('currentImage');
+  
+  modalImage.src = galleryImages[currentGalleryIndex];
+  currentSpan.textContent = currentGalleryIndex + 1;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGallery() {
+  const modal = document.getElementById('galleryModal');
+  modal.classList.remove('active');
+  document.body.style.overflow = 'auto';
+}
+
+function nextGallery() {
+  currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
+  updateGalleryImage();
+}
+
+function prevGallery() {
+  currentGalleryIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
+  updateGalleryImage();
+}
+
+function updateGalleryImage() {
+  const modalImage = document.getElementById('modalImage');
+  const currentSpan = document.getElementById('currentImage');
+  
+  modalImage.src = galleryImages[currentGalleryIndex];
+  currentSpan.textContent = currentGalleryIndex + 1;
+}
+
+// Cerrar modal al hacer clic fuera de la imagen
+document.addEventListener('click', (e) => {
+  const modal = document.getElementById('galleryModal');
+  if (e.target === modal) {
+    closeGallery();
+  }
+});
+
+// Navegación con teclado en la galería
+document.addEventListener('keydown', (e) => {
+  const modal = document.getElementById('galleryModal');
+  if (modal.classList.contains('active')) {
+    if (e.key === 'ArrowLeft') prevGallery();
+    if (e.key === 'ArrowRight') nextGallery();
+    if (e.key === 'Escape') closeGallery();
   }
 });
 
